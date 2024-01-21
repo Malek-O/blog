@@ -1,0 +1,45 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+enum Role {
+    ADMIN
+    AUTHOR
+}
+
+model User {
+    user_id      String    @id @default(uuid())
+    username     String?
+    author_name  String
+    author_email String    @unique
+    author_pfp   String?
+    article      Article[]
+    role         Role      @default(AUTHOR)
+    createdAt    DateTime  @default(now())
+    updatedAt    DateTime  @updatedAt
+}
+
+model Article {
+    article_id      String   @id @default(uuid())
+    article_title   String
+    article_content String
+    article_time    Int
+    user_id         String
+    user            User     @relation(fields: [user_id], references: [user_id])
+    tags            Tag[]
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+}
+
+model Tag {
+    tag_id    String    @id @default(uuid())
+    tag_name  String    @unique
+    articles  Article[]
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+}

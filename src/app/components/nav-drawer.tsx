@@ -11,7 +11,11 @@ import {
     DrawerTitle,
     DrawerPortal
 } from "@/components/ui/drawer"
+import { useSession } from "next-auth/react";
+import UserProfileMenu from "./user-profile-menu";
 export default function NavDrawer() {
+
+    const { data: session } = useSession()
     return (
         <Drawer direction="bottom">
             <DrawerTrigger asChild>
@@ -31,17 +35,22 @@ export default function NavDrawer() {
                                         <Link href={"/"}>Home</Link>
                                     </li>
                                     <li className="text-lg font-bold">
-                                        <Link href={"/"}>Tags</Link>
+                                        <Link href={"/tags"}>Tags</Link>
                                     </li>
                                     <li className="text-lg font-bold">
-                                        <Link href={"/"}>About</Link>
+                                        <Link href={"/about"}>About</Link>
                                     </li>
+                                  
                                 </ul>
                             </div>
-                            <div className="mt-5">
+                            <div className="mt-5 flex flex-col gap-1 items-end">
+                            
                                 <ToggleMode />
                             </div>
                         </main>
+                        {session?.user &&
+                            <UserProfileMenu />
+                        }
                         <LoginButton />
                     </div>
                 </DrawerContent>

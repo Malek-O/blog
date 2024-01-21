@@ -3,8 +3,12 @@ import LoginButton from "./login-button";
 import ToggleMode from "./light-dark-toggle";
 import { Button } from "@/components/ui/button";
 import NavDrawer from "./nav-drawer";
+import UserProfileMenu from "./user-profile-menu";
+import { getServerSession } from "next-auth";
 
-export default function Navbar() {
+export default async function Navbar() {
+    
+    const session = await getServerSession()
     return (
         <header>
             <nav className="px-10 py-5 md:flex items-center justify-between hidden ">
@@ -20,12 +24,17 @@ export default function Navbar() {
                             <Link href={"/"}>Tags</Link>
                         </li>
                         <li className="text-lg">
-                            <Link href={"/"}>About</Link>
+                            <Link href={"/about"}>About</Link>
                         </li>
                     </ul>
                 </div>
                 <div className="flex items-center gap-3">
-                    <LoginButton />
+                    {!session?.user &&
+                        <Button variant="outline" className="p-3 px-10 md:mt-0 mt-10 w-full md:w-0">
+                            <Link href={'/api/auth/signin'}>Login</Link>
+                        </Button>
+                    }
+                    {session?.user && <UserProfileMenu />}
                     <ToggleMode />
                 </div>
             </nav>

@@ -8,11 +8,11 @@ export default function LoginButton() {
 
     return (
         <>
-            {!session?.user ?
-                <Button variant="outline" className="p-3 px-10 md:mt-0 mt-10 w-full md:w-0">
+            {!session?.user &&
+                <Button variant="outline" className=" p-3 px-10 md:mt-0 mt-10 w-full md:w-0">
                     <Link href={'/api/auth/signin'}>Login</Link>
                 </Button>
-                : 'Logged in'}
+            }
         </>
     )
 }
