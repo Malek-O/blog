@@ -22,42 +22,26 @@ import {
 import { useFormState } from "react-dom";
 import { addPost } from "@/lib/actions";
 import dynamic from "next/dynamic";
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { useFormStatus } from 'react-dom'
 
-export default function RichTextEditor() {
+
+type Tag = {
+    value: string;
+    label: string
+};
+
+type TagsProps = {
+    tags: Tag[];
+};
+
+export default function RichTextEditor({ tags }: TagsProps) {
 
     const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }), []);
 
-
     const initialState = {
-        message: null
+        message: '',
     }
-
-    const frameworks = [
-        {
-            value: "next.js",
-            label: "Next.js",
-        },
-        {
-            value: "sveltekit",
-            label: "SvelteKit",
-        },
-        {
-            value: "nuxt.js",
-            label: "Nuxt.js",
-        },
-        {
-            value: "remix",
-            label: "Remix",
-        },
-        {
-            value: "astro",
-            label: "Astro",
-        },
-    ]
-
-
-
-
 
     const [title, setTitle] = useState('')
     const [article, setArticle] = useState('')
@@ -65,6 +49,7 @@ export default function RichTextEditor() {
     const [open, setOpen] = useState(false)
     const [value, setValue] = useState("")
     const [state, formAction] = useFormState(addPost, initialState)
+    const { pending } = useFormStatus()
 
 
     const option = {
@@ -72,12 +57,11 @@ export default function RichTextEditor() {
     }
 
 
-
     return (
         <form action={formAction}>
             <div className="grid w-full max-w-sm items-center gap-3 px-5 md:px-10 my-5">
                 <Label htmlFor="minutesRead" className="ms-2">Number of minutes to read</Label>
-                <Input type="number" name="minutes" onChange={(e) => setMinutes(parseInt(e.target.value))} id="minutesRead" placeholder="5" />
+                <Input min={1} type="number" value={minutes} name="minutes" onChange={(e) => setMinutes(parseInt(e.target.value))} id="minutesRead" placeholder="5" />
             </div>
             <section className="mx-5 md:mx-10 my-5">
                 <Popover open={open} onOpenChange={setOpen}>
@@ -89,35 +73,37 @@ export default function RichTextEditor() {
                             className="w-[200px] justify-between"
                         >
                             {value
-                                ? frameworks.find((framework) => framework.value === value)?.label
+                                ? tags.find((framework) => framework.value === value)?.label
                                 : "Select a catagory......"}
                             <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-[200px] ">
+                    <PopoverContent className="w-[200px]  ">
                         <Command>
                             <CommandInput placeholder="Search a catagory..." className="h-9" />
                             <CommandEmpty>No catagory found.</CommandEmpty>
-                            <CommandGroup>
-                                {frameworks.map((framework) => (
-                                    <CommandItem
-                                        key={framework.value}
-                                        value={framework.value}
-                                        onSelect={(currentValue) => {
-                                            setValue(currentValue === value ? "" : currentValue)
-                                            setOpen(false)
-                                        }}
-                                    >
-                                        {framework.label}
-                                        <CheckIcon
-                                            className={cn(
-                                                "ml-auto h-4 w-4",
-                                                value === framework.value ? "opacity-100" : "opacity-0"
-                                            )}
-                                        />
-                                    </CommandItem>
-                                ))}
-                            </CommandGroup>
+                            <ScrollArea className="h-72 w-48 rounded-md border">
+                                <CommandGroup>
+                                    {tags.map((framework) => (
+                                        <CommandItem
+                                            key={framework.value}
+                                            value={framework.value}
+                                            onSelect={(currentValue) => {
+                                                setValue(currentValue === value ? "" : currentValue)
+                                                setOpen(false)
+                                            }}
+                                        >
+                                            {framework.label}
+                                            <CheckIcon
+                                                className={cn(
+                                                    "ml-auto h-4 w-4",
+                                                    value === framework.value ? "opacity-100" : "opacity-0"
+                                                )}
+                                            />
+                                        </CommandItem>
+                                    ))}
+                                </CommandGroup>
+                            </ScrollArea>
                         </Command>
                     </PopoverContent>
                     <input type="hidden" name="cat" value={value} />
@@ -137,7 +123,10 @@ export default function RichTextEditor() {
                 />
                 <input type="hidden" value={article} name="article" />
             </div>
-            <Button variant={"secondary"} className="mt-20 mx-5 md:mx-10 mb-5 max-w-96 " >Publish</Button>
+            <div className="mx-5 md:mx-10 mt-20 mb-5">
+                {state?.message && <h1 className="text-red-600">{state.message}</h1>}
+            </div>
+            <Button aria-disabled={pending} variant={"secondary"} className="mb-10 mx-5 md:mx-10  max-w-96 " >Publish</Button>
         </form>
     )
 }
