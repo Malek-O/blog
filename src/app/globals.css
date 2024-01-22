@@ -74,3 +74,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+.ql-editor{
+  font-size: 20px;
+}
+.quill>.ql-container>.ql-editor.ql-blank::before {
+  color: #b3b3b1;
+}
+
+
+ code {
+  color: white !important;
+  background-color: #333 !important;
+}
