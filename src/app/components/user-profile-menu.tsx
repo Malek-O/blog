@@ -3,21 +3,20 @@ import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
     DropdownMenuContent,
+    DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuRadioGroup,
-    DropdownMenuRadioItem,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useState } from "react"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
 
 export default function UserProfileMenu() {
 
     const { data: session } = useSession()
-
+    
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -30,17 +29,17 @@ export default function UserProfileMenu() {
             <DropdownMenuContent className="w-56">
                 <DropdownMenuLabel  >{session?.user?.email}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuRadioGroup >
-                    <DropdownMenuItem>
-                        <Link href={'/profile'}>My Profile</Link>
+                <DropdownMenuGroup >
+                    <DropdownMenuItem asChild>
+                        <Link href={'/profile'} className="w-full cursor-pointer"  >My Profile</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <Link href={'/write'}>Write</Link>
+                    <DropdownMenuItem asChild>
+                        <Link href={'/write'} className="w-full cursor-pointer">Write</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="bg-red-100 dark:bg-red-900 mt-2">
-                        <Link href={'/api/auth/signout'}>Sign out</Link>
+                    <DropdownMenuItem asChild className="bg-red-100 dark:bg-red-900 mt-2 cursor-pointer">
+                        <Link href={'/api/auth/signout'} className="w-full" >Sign out</Link>
                     </DropdownMenuItem>
-                </DropdownMenuRadioGroup>
+                </DropdownMenuGroup>
             </DropdownMenuContent>
         </DropdownMenu>
     )
