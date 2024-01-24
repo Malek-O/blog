@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
 import { convertTime } from "@/lib/utils";
+import Link from "next/link";
 
 export default async function Home() {
 
@@ -37,8 +38,10 @@ export default async function Home() {
             )
           })}
         </div>
-        <div className="flex justify-center mt-10">
-          <Button variant={"outline"}>Explore More</Button>
+        <div className="flex justify-center my-10">
+          <Button variant={"outline"}>
+            <Link href={"/tags"}>Explore More</Link>
+          </Button>
         </div>
       </article>
 
