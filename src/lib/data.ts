@@ -72,3 +72,22 @@ export async function fetchArticlesPages(query: string) {
         throw new Error('Failed to fetch total number of invoices.');
     }
 }
+export async function fetchArticle(slug: string) {
+    noStore();
+    try {
+        const row = await prisma.article.findFirst({
+            where:{
+                article_title: slug
+            },
+            include:{
+                tags:true,
+                user:true
+            }
+        })
+
+        return row;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch total number of invoices.');
+    }
+}

@@ -44,3 +44,9 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
     totalPages,
   ];
 };
+export const unslugify = (str: string) => {
+  return str
+    .replace(/-/g, ' ') // Replace hyphens with spaces
+    .replace(/\s+/g, ' ') // Replace multiple spaces with a single space
+    .trim(); // Trim leading and trailing spaces
+};

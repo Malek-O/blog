@@ -35,7 +35,7 @@ export default function NavDrawer() {
                                         <Link href={"/"}>Home</Link>
                                     </li>
                                     <li className="text-lg font-bold">
-                                        <Link href={"/tags"}>Tags</Link>
+                                        <Link href={"/blog"}>Blog</Link>
                                     </li>
                                     <li className="text-lg font-bold">
                                         <Link href={"/about"}>About</Link>
