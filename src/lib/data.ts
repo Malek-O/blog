@@ -91,3 +91,39 @@ export async function fetchArticle(slug: string) {
         throw new Error('Failed to fetch total number of invoices.');
     }
 }
+
+export async function fetchUserArticles(
+    currentPage: number,
+) {
+    noStore();
+    const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+    try {
+        const rows = await prisma.article.findMany({
+            include: {
+                tags: true,
+                user: true,
+            },
+            take: ITEMS_PER_PAGE,
+            skip: offset
+        })
+        return rows;
+
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch invoices.');
+    }
+}
+
+export async function fetchUserArticlesPages() {
+    noStore();
+
+    try {
+        const count = await prisma.article.count()
+
+        const totalPages = Math.ceil(count / ITEMS_PER_PAGE);
+        return totalPages;
+    } catch (error) {
+        console.error('Database Error:', error);
+        throw new Error('Failed to fetch total number of invoices.');
+    }
+}

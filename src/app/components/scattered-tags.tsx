@@ -38,7 +38,7 @@ export default function ScatteredTags({ tags }: arrTags) {
                                 onClick={() => {
                                     handleSearch(item.tag_name);
                                 }}
-                            key={item.tag_id} className="rounded-3xl border-2 border-black p-2">#{item.tag_name}</button>
+                            key={item.tag_id} className="rounded-3xl border-2 border-black dark:border-white p-2">#{item.tag_name}</button>
                         )
                     }
                 })}
@@ -51,7 +51,7 @@ export default function ScatteredTags({ tags }: arrTags) {
                                 onClick={() => {
                                     handleSearch(item.tag_name);
                                 }}
-                            key={item.tag_id} className="rounded-3xl border-2 border-black p-2">#{item.tag_name}</button>
+                                key={item.tag_id} className="rounded-3xl border-2 border-black dark:border-white p-2">#{item.tag_name}</button>
                         )
                     }
                 })}

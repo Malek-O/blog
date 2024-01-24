@@ -3,6 +3,7 @@
 import { getServerSession } from "next-auth";
 import { prisma } from "./prisma";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export async function addPost(prevState: any, formData: FormData) {
 
@@ -60,7 +61,7 @@ export async function addPost(prevState: any, formData: FormData) {
                 tagId: findTag.tag_id
             }
         })
-        
+
         console.log(insertArticle);
 
     } catch (error) {
@@ -69,5 +70,30 @@ export async function addPost(prevState: any, formData: FormData) {
 
     redirect('/')
 
+}
 
+export async function deletePost(id: string) {
+    console.log(id);
+    
+    const session = await getServerSession()
+    try {
+        const userRow = await prisma.user.findUnique({ where: { author_email: session?.user?.email ?? "" } })
+        console.log("Start deleting ...");
+        
+        const deletedArt = await prisma.article.delete({
+            where: {
+                article_id: id,
+                user_id: userRow?.user_id ?? ""
+            }
+        })
+        console.log(deletedArt);
+
+        console.log(userRow);
+        revalidatePath('/profile')
+        return { message: 'Deleted Article.' };
+
+    } catch (error) {
+        console.log(error);
+        return { message: 'Database Error: Failed to Delete Article.' };
+    }
 }
