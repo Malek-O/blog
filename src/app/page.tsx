@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/prisma";
 import { convertTime } from "@/lib/utils";
 import Link from "next/link";
+import { Suspense } from "react";
+import ArticleSkeleton from "./components/article-skeleton";
 
 export default async function Home() {
 
@@ -27,17 +29,20 @@ export default async function Home() {
         <h1 className="text-center font-bold mt-14 text-2xl font-serif after:content-none after:border-red-500 border2">Featured Articles</h1>
 
 
-        <div className="grid md:grid-cols-2 grid-cols-1 mt-10 gap-10 md:mx-0 mx-10">
-          {featuredArticles.map((article) => {
-            return (
-              <div key={article.article_id} className="dark:border-white border-2 p-5 max-w-80">
-                <h5 className="uppercase font-light my-2">{article.tags.tag_name}</h5>
-                <h1 className="font-bold text-lg text-wrap">{article.article_title}</h1>
-                <h6 className="text-sm font-extralight mt-2">{article.user.author_name} - {convertTime(article.createdAt.toString())} ({article.article_time} mins read)</h6>
-              </div>
-            )
-          })}
-        </div>
+        <Suspense fallback={<ArticleSkeleton />}>
+          <div className="grid md:grid-cols-2 grid-cols-1 mt-10 gap-10 md:mx-0 mx-10">
+            {featuredArticles.map((article) => {
+              return (
+                <div key={article.article_id} className="dark:border-white border-2 p-5 max-w-96">
+                  <h5 className="uppercase font-light my-2">{article.tags.tag_name}</h5>
+                  <h1 className="font-bold text-lg text-wrap">{article.article_title}</h1>
+                  <h6 className="text-sm font-extralight mt-2">{article.user.author_name} - {convertTime(article.createdAt.toString())} ({article.article_time} mins read)</h6>
+                </div>
+              )
+            })}
+          </div>
+        </Suspense>
+
         <div className="flex justify-center my-10">
           <Button variant={"outline"}>
             <Link href={"/tags"}>Explore More</Link>

@@ -5,6 +5,8 @@ import ArticlesData from "../components/articles-data";
 import Pagination from "../components/pagination";
 import { fetchArticlesPages } from "@/lib/data";
 import ScatteredTags from "../components/scattered-tags";
+import { Suspense } from "react";
+import ArticleSkeleton from "../components/article-skeleton";
 
 type articleSearchTypes = {
     searchParams?: {
@@ -27,7 +29,9 @@ export default async function page({ searchParams }: articleSearchTypes) {
         <section className="flex justify-center mt-28 flex-col">
             <SearchBar placeholder="ReactJS..." />
             <ScatteredTags tags={tagsRows} />
-            <ArticlesData currentPage={currentPage} query={query} />
+            <Suspense key={query + currentPage} fallback={<ArticleSkeleton />}>
+                <ArticlesData currentPage={currentPage} query={query} />
+            </Suspense>
             <div className="my-10 flex w-full justify-center">
                 <Pagination totalPages={totalPages} />
             </div>
