@@ -37,7 +37,7 @@ export async function addPost(prevState: any, formData: FormData) {
         }
     }
 
-    const slugify = (str:string) =>
+    const slugify = (str: string) =>
         str
             .toLowerCase()
             .trim()
@@ -57,16 +57,12 @@ export async function addPost(prevState: any, formData: FormData) {
                 article_time: parseInt(min),
                 article_title: slugify(title),
                 user_id: findUser.user_id,
-                tags: {
-                    connect: {
-                        tag_id: findTag.tag_id
-                    }
-                }
+                tagId: findTag.tag_id
             }
         })
-
-        console.log(insertArticle);
         
+        console.log(insertArticle);
+
     } catch (error) {
         console.log(error);
     }
