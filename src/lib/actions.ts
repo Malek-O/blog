@@ -61,14 +61,14 @@ export async function addPost(prevState: any, formData: FormData) {
                 tagId: findTag.tag_id
             }
         })
-
+        revalidatePath('/profile')
         console.log(insertArticle);
 
     } catch (error) {
         console.log(error);
     }
 
-    redirect('/')
+    redirect(`/blog/${slugify(title)}`)
 
 }
 
