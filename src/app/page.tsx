@@ -45,7 +45,7 @@ export default async function Home() {
 
         <div className="flex justify-center my-10">
           <Button variant={"outline"}>
-            <Link href={"/tags"}>Explore More</Link>
+            <Link href={"/blog"}>Explore More</Link>
           </Button>
         </div>
       </article>

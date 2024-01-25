@@ -38,7 +38,7 @@ export default function page() {
             <aside className="md:mx-10 mx-5 mt-20 p-8 md:p-20 mb-5 bg-black dark:bg-white text-white text-center">
                 <h1 className="text-xl dark:text-black">Want to connect?</h1>
                 <p className="text-center text-[#8D8D8D] text-lg mt-2 px-3 md:px-0">
-                    Curious about the possibilities for your website? Let's discuss your ideas and make them a reality.
+                    Curious about the possibilities for your website? Let&#39;s discuss your ideas and make them a reality.
                 </p>
                 <div className="flex gap-2 justify-center mt-5">
                     <Button variant={"secondary"} className="text-black dark:text-white w-10 h-10">

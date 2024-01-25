@@ -2,7 +2,7 @@ import { NextAuthOptions } from "next-auth";
 import NextAuth from "next-auth/next";
 import GoogleProivder from "next-auth/providers/google";
 import { prisma } from "@/lib/prisma";
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
     providers: [
         GoogleProivder({
             clientId: process.env.GOOGLE_CLIENT_ID ?? "",
@@ -34,6 +34,6 @@ export const authOptions: NextAuthOptions = {
     }
 };
 
-export const handler = NextAuth(authOptions);
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
