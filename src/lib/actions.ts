@@ -6,7 +6,6 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { slugify } from "./utils";
 import { cookies } from "next/headers";
-
 export async function addPost(prevState: any, formData: FormData) {
 
 

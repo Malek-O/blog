@@ -3,8 +3,13 @@ import { slugify } from "@/lib/utils";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server"
 import { limiter } from "../config/limiter";
-
+import createDOMPurify from 'dompurify'
+import { JSDOM } from "jsdom"
 export async function POST(request: NextRequest) {
+
+    const window = new JSDOM('').window;
+    const DOMPurify = createDOMPurify(window);
+
     const origin = request.headers.get('origin')
     const remaining = await limiter.removeTokens(1);
     if (remaining < 0) {
@@ -40,7 +45,7 @@ export async function POST(request: NextRequest) {
 
         await prisma.article.create({
             data: {
-                article_content: article,
+                article_content: DOMPurify.sanitize(article),
                 article_time: parseInt(min),
                 article_title: slugify(title),
                 user_id: findUser.user_id,
