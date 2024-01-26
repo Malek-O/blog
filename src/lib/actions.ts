@@ -4,14 +4,12 @@ import { getServerSession } from "next-auth";
 import { prisma } from "./prisma";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { slugify } from "./utils";
+import { cookies } from "next/headers";
 
 export async function addPost(prevState: any, formData: FormData) {
 
-    const session = await getServerSession()
 
-    if (!session?.user) {
-        redirect('/')
-    }
     const min = formData.get('minutes') as string;
     const cat = formData.get('cat') as string
     const title = formData.get('title') as string;
@@ -38,48 +36,42 @@ export async function addPost(prevState: any, formData: FormData) {
         }
     }
 
-    const slugify = (str: string) =>
-        str
-            .toLowerCase()
-            .trim()
-            .replace(/[^\w\s-]/g, "")
-            .replace(/[\s_-]+/g, "-")
-            .replace(/^-+|-+$/g, "");
 
+    let status = 500;
+    let text;
     try {
-        const findTag = await prisma.tag.findFirst({ where: { tag_name: cat } })
-        if (!findTag) redirect('/')
-        const findUser = await prisma.user.findUnique({ where: { author_email: session?.user?.email as string } })
-        if (!findUser) redirect('/')
 
-        const insertArticle = await prisma.article.create({
-            data: {
-                article_content: article,
-                article_time: parseInt(min),
-                article_title: slugify(title),
-                user_id: findUser.user_id,
-                tagId: findTag.tag_id
-            }
+        const response = await fetch('http://localhost:3000/api/write', {
+            method: 'POST',
+            headers: { Cookie: cookies().toString() },
+            body: formData
         })
-        revalidatePath('/profile')
-        console.log(insertArticle);
+        const data = await response.json()
+        text = data
+
+        status = response.status
 
     } catch (error) {
         console.log(error);
     }
 
-    redirect(`/blog/${slugify(title)}`)
-
+    if (status == 201) {
+        redirect(`/blog/${slugify(title)}`)
+    } else {
+        return {
+            message: text ? text.message : "Something went wrong",
+        }
+    }
 }
 
 export async function deletePost(id: string) {
     console.log(id);
-    
+
     const session = await getServerSession()
     try {
         const userRow = await prisma.user.findUnique({ where: { author_email: session?.user?.email ?? "" } })
         console.log("Start deleting ...");
-        
+
         const deletedArt = await prisma.article.delete({
             where: {
                 article_id: id,

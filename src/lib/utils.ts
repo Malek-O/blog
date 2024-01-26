@@ -50,3 +50,11 @@ export const unslugify = (str: string) => {
     .replace(/\s+/g, ' ') // Replace multiple spaces with a single space
     .trim(); // Trim leading and trailing spaces
 };
+
+export const slugify = (str: string) =>
+  str
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/[\s_-]+/g, "-")
+    .replace(/^-+|-+$/g, "");
