@@ -40,7 +40,6 @@ export async function POST(request: NextRequest) {
             where: {
                 tag_name: {
                     equals: cat,
-                    mode: 'insensitive'
                 }
             }
         })
