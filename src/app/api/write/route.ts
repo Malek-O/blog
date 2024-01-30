@@ -36,7 +36,16 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-        const findTag = await prisma.tag.findFirst({ where: { tag_name: cat } })
+        const findTag = await prisma.tag.findFirst({
+            where: {
+                tag_name: {
+                    equals: cat,
+                    mode: 'insensitive'
+                }
+            }
+        })
+        console.log(findTag, cat);
+
         if (!findTag) return NextResponse.json({ message: "Cannot find tag" }, { status: 401 })
 
         const findUser = await prisma.user.findUnique({ where: { author_email: session.user.email as string } })
