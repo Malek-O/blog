@@ -3,9 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") 
-  directUrl = env("POSTGRES_URL_NON_POOLING")
+    provider = "mysql"
+    url      = env("DATABASE_URL")
 }
 
 enum Role {
@@ -28,7 +27,7 @@ model User {
 model Article {
     article_id      String   @id @default(uuid())
     article_title   String
-    article_content String @db.Text
+    article_content String   @db.Text
     article_time    Int
     user_id         String
     user            User     @relation(fields: [user_id], references: [user_id])
