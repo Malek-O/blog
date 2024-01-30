@@ -13,6 +13,9 @@ export async function addPost(prevState: any, formData: FormData) {
     const cat = formData.get('cat') as string
     const title = formData.get('title') as string;
     const article = formData.get('article') as string
+    let cleanedText = article.replace(/(<p><br><\/p>)+/g, '<p><br></p>').trim();
+    console.log(article);
+    
 
     if (parseInt(min) < 1) {
         return {
@@ -29,7 +32,7 @@ export async function addPost(prevState: any, formData: FormData) {
             message: 'Title should be at least 3 characters',
         }
     }
-    if (!article.length || article.length < 250) {
+    if (!cleanedText.length || cleanedText.length < 250) {
         return {
             message: 'Article should be at least 250 characters',
         }

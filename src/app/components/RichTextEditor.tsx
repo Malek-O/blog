@@ -1,9 +1,9 @@
 'use client'
 import { Button } from "@/components/ui/button";
 import { useMemo, useState } from "react";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
 import { Input } from "@/components/ui/input"
+import { Quill } from "react-quill";
 import { Label } from "@/components/ui/label"
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
 import { cn } from "@/lib/utils"
@@ -24,7 +24,7 @@ import { addPost } from "@/lib/actions";
 import dynamic from "next/dynamic";
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { useFormStatus } from 'react-dom'
-
+import { SurveyFormClipboard } from '@/app/components/quillConfig'
 
 type Tag = {
     value: string;
@@ -39,6 +39,7 @@ export default function RichTextEditor({ tags }: TagsProps) {
 
     const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }), []);
 
+    Quill.register("modules/clipboard", SurveyFormClipboard, true);
     const initialState = {
         message: '',
     }
@@ -53,9 +54,13 @@ export default function RichTextEditor({ tags }: TagsProps) {
 
 
     const option = {
-        toolbar: [['code-block', 'italic', 'bold', 'underline', 'strike', { 'header': 1 }, { 'header': 2 }, 'blockquote']]
+        toolbar: [['code-block', 'italic', 'bold', 'underline', 'strike', { 'header': 1 }, { 'header': 2 }, 'blockquote']],
+        clipboard: {
+            matchVisual: false
+        }
     }
 
+    console.log(article);
 
     return (
         <form action={formAction}>

@@ -28,6 +28,7 @@ export async function POST(request: NextRequest) {
     const cat = form.get('cat') as string
     const title = form.get('title') as string;
     const article = form.get('article') as string
+    let cleanedText = article.replace(/(<p><br><\/p>)+/g, '<p><br></p>').trim();
 
     const session = await getServerSession()
     console.log(session);
@@ -53,7 +54,7 @@ export async function POST(request: NextRequest) {
 
         await prisma.article.create({
             data: {
-                article_content: DOMPurify.sanitize(article),
+                article_content: DOMPurify.sanitize(cleanedText),
                 article_time: parseInt(min),
                 article_title: slugify(title),
                 user_id: findUser.user_id,
