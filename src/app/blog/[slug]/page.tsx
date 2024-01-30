@@ -15,7 +15,7 @@ export default async function page({ params }: { params: { slug: string } }) {
             <h6 className="text-center font-light mt-5">{article.user.author_name} - {convertTime(article.createdAt.toString())} ({article.article_time} mins read)</h6>
             <h6 className="text-center font-light mt-2">#{article.tags.tag_name}</h6>
 
-            <div className="break-words mt-10 " dangerouslySetInnerHTML={{ __html: article.article_content }}>
+            <div className="break-words mt-10 quill-class" dangerouslySetInnerHTML={{ __html: article.article_content }}>
             </div>
 
         </article>
