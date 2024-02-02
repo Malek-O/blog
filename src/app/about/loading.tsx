@@ -1,5 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton"
-import ArticleSkeleton from "./components/article-skeleton"
+import ArticleSkeleton from "../components/article-skeleton"
 
 export default function Loading() {
   return (

@@ -34,7 +34,9 @@ export default async function page({ searchParams }: UserArticleTypes) {
                 <div>
                     <h1 className='text-lg font-bold'>{session.user.name}</h1>
                     <h6 className='text-black/35'>@{session.user.name}</h6>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsa optio sequi incidunt officiis accusantium soluta, repellendus maiores perferendis dignissimos. Excepturi!</p>
+                    <p>
+                        This is your profile. You have full control over your blogs here. You can create new posts, and delete any that you no longer want to keep. Navigate effortlessly between your blogs using the intuitive interface. Make your online presence truly yours.
+                    </p>
                 </div>
             </section>
             <h1 className="text-center font-bold mt-14 text-2xl font-serif after:content-none ">My Articles</h1>
