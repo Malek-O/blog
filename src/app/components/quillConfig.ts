@@ -1,3 +1,4 @@
+'use client'
 import { Quill } from "react-quill";
 import Delta from "quill-delta";
 
@@ -8,10 +9,7 @@ export class SurveyFormClipboard extends Clipboard {
         e.preventDefault();
         const range = this.quill.getSelection();
         const text = e.clipboardData.getData("text/plain");
-        console.log(range);
         const itemsToPaste = text.split("\r\n").filter((item: string) => item);
-        console.log(itemsToPaste);
-        console.log("TEXT", JSON.stringify(text));
 
         const delta = new Delta()
             .retain(range.index)

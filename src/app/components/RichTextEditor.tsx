@@ -1,6 +1,6 @@
 'use client'
 import { Button } from "@/components/ui/button";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "react-quill/dist/quill.bubble.css";
 import { Input } from "@/components/ui/input"
 import { Quill } from "react-quill";
@@ -24,7 +24,7 @@ import { addPost } from "@/lib/actions";
 import dynamic from "next/dynamic";
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { useFormStatus } from 'react-dom'
-import { SurveyFormClipboard } from '@/app/components/quillConfig'
+import { Skeleton } from "@/components/ui/skeleton";
 
 type Tag = {
     value: string;
@@ -37,9 +37,18 @@ type TagsProps = {
 
 export default function RichTextEditor({ tags }: TagsProps) {
 
-    const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }), []);
+    const ReactQuill = useMemo(() => dynamic(async () => {
+        const { default: RQ } = await import("react-quill");
+        const surv = await import('@/app/components/quillConfig')
+        RQ.Quill.register("modules/clipboard", surv.SurveyFormClipboard, true);
+        return RQ
+    }, {
+        ssr: false, loading: () =>
+            <div className="mx-2">
+                <Skeleton className="h-4 w-96"/>
+            </div>
+    }), []);
 
-    Quill.register("modules/clipboard", SurveyFormClipboard, true);
     const initialState = {
         message: '',
     }
@@ -59,8 +68,6 @@ export default function RichTextEditor({ tags }: TagsProps) {
             matchVisual: false
         }
     }
-
-    console.log(article);
 
     return (
         <form action={formAction}>
