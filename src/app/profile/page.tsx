@@ -17,9 +17,12 @@ type UserArticleTypes = {
 export default async function page({ searchParams }: UserArticleTypes) {
 
     const session = await getServerSession()
-    const currentPage = Number(searchParams?.page) || 1;
+    let currentPage = Number(searchParams?.page) || 1;
     const totalPages = await fetchUserArticlesPages()
-
+    if (currentPage > totalPages){
+        currentPage = totalPages;
+    }
+    
     console.log(session);
     if (!session || !session.user) {
         redirect("/api/auth/signin")
