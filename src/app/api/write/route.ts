@@ -65,6 +65,6 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ message: "Successfully written", id: row.article_id }, { status: 201 })
     } catch (error) {
         console.log(error);
-        return NextResponse.json({ message: "Something went wrong" }, { status: 500 })
+        return NextResponse.json({ message: "Something went wrong on server" }, { status: 500 })
     }
 }
