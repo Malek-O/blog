@@ -22,9 +22,7 @@ export default async function page({ searchParams }: UserArticleTypes) {
     if (currentPage > totalPages) {
         currentPage = totalPages;
     }
-    console.log(totalPages);
 
-    console.log(session);
     if (!session || !session.user) {
         redirect("/api/auth/signin")
     }

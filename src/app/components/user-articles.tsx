@@ -2,6 +2,7 @@ import { fetchUserArticles } from "@/lib/data"
 import { convertTime } from "@/lib/utils"
 import Link from "next/link"
 import DeleteArticle from "./delete-article"
+import { deletePost } from "@/lib/actions"
 
 export default async function UserArticles({ currentPage, }: { currentPage: number }) {
 
@@ -19,7 +20,9 @@ export default async function UserArticles({ currentPage, }: { currentPage: numb
                                     <h1 className="font-bold text-lg text-wrap">{article.article_title}</h1>
                                     <h6 className="text-sm font-extralight mt-2">{article.user.author_name} - {convertTime(article.createdAt.toString())} ({article.article_time} mins read)</h6>
                                 </Link>
-                                <DeleteArticle id={article.article_id} />
+                                <form action={deletePost.bind(null, article.article_id)}>
+                                    <DeleteArticle id={article.article_id} />
+                                </form>
                             </div>
                         )
                     })}

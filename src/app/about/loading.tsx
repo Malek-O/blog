@@ -11,15 +11,15 @@ export default function Loading() {
         <h1 className="dark:text-white md:text-6xl sm:text-4xl text-xl  text-black">
           <Skeleton className="rounded-xl w-96 mt-14  dark:border-white p-3 px-10" />
         </h1>
-        <p className="text-[#8D8D8D] text-lg mt-5 px-3 md:px-0">
+        <div className="text-[#8D8D8D] text-lg mt-5 px-3 md:px-0">
           <Skeleton className="rounded-xl w-72 mx-auto  dark:border-white p-2 px-10" />
-        </p>
+        </div>
       </div>
 
       <article >
-        <h1 className="text-center font-bold mt-14 text-2xl font-serif after:content-none after:border-red-500 border2">
+        <div className="text-center font-bold mt-14 text-2xl font-serif after:content-none after:border-red-500 border2">
           <Skeleton className="rounded-xl w-40 mx-auto dark:border-white p-2 px-10" />
-        </h1>
+        </div>
 
         <ArticleSkeleton />
         <div className="flex justify-center my-10">
