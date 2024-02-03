@@ -1,6 +1,7 @@
 import { unstable_noStore as noStore } from 'next/cache';
 import { prisma } from './prisma';
 import { notFound, redirect } from 'next/navigation';
+import { getServerSession } from 'next-auth';
 
 const ITEMS_PER_PAGE = 15;
 
@@ -75,7 +76,7 @@ export async function fetchArticlesPages(query: string) {
     }
 }
 export async function fetchArticle(str: string[]) {
-    
+
     noStore();
     if (str.length !== 2) notFound()
     try {
@@ -101,9 +102,15 @@ export async function fetchUserArticles(
     currentPage: number,
 ) {
     noStore();
+    const session =await getServerSession()
     const offset = ((currentPage > 0 ? currentPage : 1) - 1) * ITEMS_PER_PAGE;
     try {
         const rows = await prisma.article.findMany({
+            where:{
+                user:{
+                    author_email: session?.user?.email ?? ""
+                }
+            },
             include: {
                 tags: true,
                 user: true,
