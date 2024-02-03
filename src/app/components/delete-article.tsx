@@ -1,16 +1,6 @@
 'use client'
 import { Button } from "@/components/ui/button"
-import { useSession } from "next-auth/react"
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
 import { useEffect, useState } from "react"
-import { deletePost } from "@/lib/actions"
 import { useFormStatus } from 'react-dom'
 
 export default function DeleteArticle({ id }: { id: string }) {
@@ -21,9 +11,6 @@ export default function DeleteArticle({ id }: { id: string }) {
     useEffect(() => {
         setIsClient(true)
     }, [])
-    useEffect(()=>{
-        console.log(pending);
-    },[pending])
     return (
         <>
             {isClient &&

@@ -74,7 +74,6 @@ export async function fetchArticlesPages(query: string) {
     }
 }
 export async function fetchArticle(str: string[]) {
-    console.log(str);
     noStore();
     if (str.length !== 2) notFound()
     try {
@@ -101,8 +100,6 @@ export async function fetchUserArticles(
 ) {
     noStore();
     const offset = ((currentPage > 0 ? currentPage : 1) - 1) * ITEMS_PER_PAGE;
-    console.log(currentPage);
-
     try {
         const rows = await prisma.article.findMany({
             include: {
