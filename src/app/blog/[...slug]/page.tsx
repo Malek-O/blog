@@ -3,12 +3,9 @@ import { convertTime, unslugify } from "@/lib/utils";
 import { notFound } from "next/navigation";
 export default async function page({ params }: { params: { slug: any } }) {
 
-
+    if (params.slug?.length !== 2) notFound();
     const article = await fetchArticle(params.slug)
-
-    if (!article) {
-        notFound();
-    }
+    if (!article) notFound();
 
     return (
         <article className="md:px-0 px-5 max-w-[868px] mx-auto p-2 my-20 relative">

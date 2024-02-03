@@ -1,6 +1,6 @@
 import { unstable_noStore as noStore } from 'next/cache';
 import { prisma } from './prisma';
-import { redirect } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 
 const ITEMS_PER_PAGE = 2;
 
@@ -76,7 +76,7 @@ export async function fetchArticlesPages(query: string) {
 export async function fetchArticle(str: string[]) {
     console.log(str);
     noStore();
-    if (str.length !== 2) redirect('/blog')
+    if (str.length !== 2) notFound()
     try {
         const row = await prisma.article.findFirst({
             where: {
@@ -93,7 +93,7 @@ export async function fetchArticle(str: string[]) {
         console.error('Database Error:', error);
         throw new Error('Failed to fetch total number of invoices.');
     }
-    redirect('/blog')
+    notFound()
 }
 
 export async function fetchUserArticles(
