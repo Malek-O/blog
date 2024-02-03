@@ -75,6 +75,7 @@ export async function fetchArticlesPages(query: string) {
     }
 }
 export async function fetchArticle(str: string[]) {
+    
     noStore();
     if (str.length !== 2) notFound()
     try {
