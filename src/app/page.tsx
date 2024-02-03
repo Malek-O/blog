@@ -10,6 +10,12 @@ export default async function Home() {
 
   const featuredArticles = await prisma.article.findMany({
     take: 3,
+    where: {
+      user: {
+        author_email: 'malekmokhlesit@gmail.com'
+      }
+    },
+
     include: {
       tags: true,
       user: true,
