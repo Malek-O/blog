@@ -2,8 +2,6 @@ import { fetchUserArticles } from "@/lib/data"
 import { convertTime } from "@/lib/utils"
 import Link from "next/link"
 import DeleteArticle from "./delete-article"
-import { Suspense } from "react"
-import DeleteBtnSkeleton from "./delete-button-sekeleton"
 
 export default async function UserArticles({ currentPage, }: { currentPage: number }) {
 

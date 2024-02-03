@@ -22,7 +22,6 @@ export async function POST(request: NextRequest) {
             }
         })
     }
-    console.log("Remaining tokens: ", remaining);
     const form = await request.formData()
     const min = form.get('minutes') as string;
     const cat = form.get('cat') as string
@@ -31,7 +30,6 @@ export async function POST(request: NextRequest) {
     let cleanedText = article.replace(/(<p><br><\/p>)+/g, '<p><br></p>').trim();
 
     const session = await getServerSession()
-    console.log(session);
     if (!session?.user) {
         return NextResponse.json({ message: "Forbidden" }, { status: 403 })
     }
@@ -44,7 +42,6 @@ export async function POST(request: NextRequest) {
                 }
             }
         })
-        console.log(findTag, cat);
 
         if (!findTag) return NextResponse.json({ message: "Cannot find tag" }, { status: 401 })
 

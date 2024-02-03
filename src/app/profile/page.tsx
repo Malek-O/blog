@@ -19,10 +19,11 @@ export default async function page({ searchParams }: UserArticleTypes) {
     const session = await getServerSession()
     let currentPage = Number(searchParams?.page) || 1;
     const totalPages = await fetchUserArticlesPages()
-    if (currentPage > totalPages){
+    if (currentPage > totalPages) {
         currentPage = totalPages;
     }
-    
+    console.log(totalPages);
+
     console.log(session);
     if (!session || !session.user) {
         redirect("/api/auth/signin")
@@ -44,8 +45,12 @@ export default async function page({ searchParams }: UserArticleTypes) {
                 <UserArticles currentPage={currentPage} />
             </Suspense>
             <div className="my-10 flex w-full justify-center">
-                <Pagination totalPages={totalPages} />
+                {totalPages > 0 ?
+                    <Pagination totalPages={totalPages} />
+                    : <h2 className='font-bold'>You dont have articles yet :) </h2>}
             </div>
+
+
         </>
     )
 }

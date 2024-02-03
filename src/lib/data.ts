@@ -96,7 +96,9 @@ export async function fetchUserArticles(
     currentPage: number,
 ) {
     noStore();
-    const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+    const offset = ((currentPage > 0 ? currentPage : 1) - 1) * ITEMS_PER_PAGE;
+    console.log(currentPage);
+    
     try {
         const rows = await prisma.article.findMany({
             include: {

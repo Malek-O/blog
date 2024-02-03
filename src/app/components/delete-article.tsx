@@ -11,11 +11,14 @@ import {
 } from "@/components/ui/dialog"
 import { useEffect, useState } from "react"
 import { deletePost } from "@/lib/actions"
+import { useFormStatus } from 'react-dom'
 
 export default function DeleteArticle({ id }: { id: string }) {
 
     const [isClient, setIsClient] = useState(false)
     const deleteArticleWithId = deletePost.bind(null, id)
+    const { pending } = useFormStatus()
+    console.log(pending);
 
     useEffect(() => {
         setIsClient(true)
@@ -32,7 +35,7 @@ export default function DeleteArticle({ id }: { id: string }) {
                         </Button>
                     </DialogTrigger>
                     <DialogContent>
-                        <form action={deleteArticleWithId} className="flex flex-col">
+                        <form className="flex flex-col">
                             <DialogHeader>
                                 <DialogTitle>Are you absolutely sure?</DialogTitle>
                                 <DialogDescription>
@@ -40,7 +43,7 @@ export default function DeleteArticle({ id }: { id: string }) {
                                     and remove it from our servers.
                                 </DialogDescription>
                             </DialogHeader>
-                            <Button className="mt-3 w-28" variant={"destructive"}>Delete</Button>
+                            <Button formAction={deleteArticleWithId} disabled={pending} className="mt-3 w-28 disabled:bg-red-300" variant={"destructive"}>Delete</Button>
                         </form>
                     </DialogContent>
                 </Dialog>

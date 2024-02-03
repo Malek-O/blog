@@ -14,7 +14,6 @@ export async function addPost(prevState: any, formData: FormData) {
     const title = formData.get('title') as string;
     const article = formData.get('article') as string
     let cleanedText = article.replace(/(<p><br><\/p>)+/g, '<p><br></p>').trim();
-    console.log(article);
     
 
     if (parseInt(min) < 1) {
@@ -67,12 +66,10 @@ export async function addPost(prevState: any, formData: FormData) {
 }
 
 export async function deletePost(id: string) {
-    console.log(id);
 
     const session = await getServerSession()
     try {
         const userRow = await prisma.user.findUnique({ where: { author_email: session?.user?.email ?? "" } })
-        console.log("Start deleting ...");
 
         const deletedArt = await prisma.article.delete({
             where: {
@@ -80,9 +77,7 @@ export async function deletePost(id: string) {
                 user_id: userRow?.user_id ?? ""
             }
         })
-        console.log(deletedArt);
 
-        console.log(userRow);
         revalidatePath('/profile')
         return { message: 'Deleted Article.' };
 
