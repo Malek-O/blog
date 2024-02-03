@@ -22,7 +22,8 @@ export async function fetchFilteredArticles(
                     {
                         tags: {
                             tag_name: {
-                                contains: query
+                                contains: query,
+                                mode: 'insensitive'
                             }
                         }
                     }
