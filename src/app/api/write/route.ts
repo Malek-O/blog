@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
         if (!findUser) return NextResponse.json({ message: "Forbidden" }, { status: 403 })
 
 
-        await prisma.article.create({
+        const row = await prisma.article.create({
             data: {
                 article_content: DOMPurify.sanitize(cleanedText),
                 article_time: parseInt(min),
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
             }
         })
 
-        return NextResponse.json({ message: "Successfully written" }, { status: 201 })
+        return NextResponse.json({ message: "Successfully written", id: row.article_id }, { status: 201 })
     } catch (error) {
         console.log(error);
         return NextResponse.json({ message: "Something went wrong" }, { status: 500 })

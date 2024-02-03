@@ -33,7 +33,7 @@ export default async function Home() {
           <div className="grid md:grid-cols-2 grid-cols-1 mt-10 gap-10 md:mx-0 mx-10">
             {featuredArticles.map((article) => {
               return (
-                <Link href={`/blog/${article.article_title}`} key={article.article_id} className="dark:border-white border-2 p-5 max-w-96">
+                <Link href={`/blog/${article.article_id}/${article.article_title}`} key={article.article_id} className="dark:border-white border-2 p-5 max-w-96">
                   <h5 className="uppercase font-light my-2">{article.tags.tag_name}</h5>
                   <h1 className="font-bold text-lg text-wrap">{article.article_title}</h1>
                   <h6 className="text-sm font-extralight mt-2">{article.user.author_name} - {convertTime(article.createdAt.toString())} ({article.article_time} mins read)</h6>

@@ -1,7 +1,8 @@
 import { fetchArticle } from "@/lib/data"
 import { convertTime, unslugify } from "@/lib/utils";
 import { notFound } from "next/navigation";
-export default async function page({ params }: { params: { slug: string } }) {
+export default async function page({ params }: { params: { slug: any } }) {
+
 
     const article = await fetchArticle(params.slug)
 
@@ -17,7 +18,6 @@ export default async function page({ params }: { params: { slug: string } }) {
 
             <div className="break-words mt-10 quill-class" dangerouslySetInnerHTML={{ __html: article.article_content }}>
             </div>
-
         </article>
     )
 }

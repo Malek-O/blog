@@ -57,7 +57,7 @@ export async function addPost(prevState: any, formData: FormData) {
     }
 
     if (status == 201) {
-        redirect(`/blog/${slugify(title)}`)
+        redirect(`/blog/${text?.id}/${slugify(title)}`)
     } else {
         return {
             message: text ? text.message : "Something went wrong",

@@ -15,7 +15,7 @@ export default async function UserArticles({ currentPage, }: { currentPage: numb
                     {articles.map((article) => {
                         return (
                             <div key={article.article_id} className="relative dark:border-white border-2 p-5 max-w-96">
-                                <Link href={`/blog/${article.article_title}`}  >
+                                <Link href={`/blog/${article.article_id}/${article.article_title}`}>
                                     <h5 className="uppercase font-light my-2">{article.tags.tag_name}</h5>
                                     <h1 className="font-bold text-lg text-wrap">{article.article_title}</h1>
                                     <h6 className="text-sm font-extralight mt-2">{article.user.author_name} - {convertTime(article.createdAt.toString())} ({article.article_time} mins read)</h6>
