@@ -36,7 +36,7 @@ export async function addPost(prevState: any, formData: FormData) {
     let text;
     try {
 
-        const response = await fetch('http://localhost:3000/api/write', {
+        const response = await fetch('https://nuntium.site/api/write', {
             method: 'POST',
             headers: { Cookie: cookies().toString() },
             body: formData
