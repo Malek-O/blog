@@ -1,12 +1,12 @@
 import { Input } from "@/components/ui/input"
 import { prisma } from "@/lib/prisma"
-import SearchBar from "../components/search-bar";
-import ArticlesData from "../components/articles-data";
-import Pagination from "../components/pagination";
+import SearchBar from "../../components/search-bar";
+import ArticlesData from "../../components/articles-data";
+import Pagination from "../../components/pagination";
 import { fetchArticlesPages } from "@/lib/data";
-import ScatteredTags from "../components/scattered-tags";
+import ScatteredTags from "../../components/scattered-tags";
 import { Suspense } from "react";
-import ArticleSkeleton from "../components/article-skeleton";
+import ArticleSkeleton from "../../components/article-skeleton";
 
 type articleSearchTypes = {
     searchParams?: {

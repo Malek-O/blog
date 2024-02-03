@@ -96,3 +96,10 @@ code {
   color: white !important;
   background-color: #333 !important;
 }
+
+.quill-class h1 {
+  font-size: 2rem;
+}
+.quill-class h2 {
+  font-size: 1.25rem;
+}

@@ -17,10 +17,12 @@ type UserArticleTypes = {
 export default async function page({ searchParams }: UserArticleTypes) {
 
     const session = await getServerSession()
-    const currentPage = Number(searchParams?.page) || 1;
+    let currentPage = Number(searchParams?.page) || 1;
     const totalPages = await fetchUserArticlesPages()
+    if (currentPage > totalPages) {
+        currentPage = totalPages;
+    }
 
-    console.log(session);
     if (!session || !session.user) {
         redirect("/api/auth/signin")
     }
@@ -31,7 +33,9 @@ export default async function page({ searchParams }: UserArticleTypes) {
                 <div>
                     <h1 className='text-lg font-bold'>{session.user.name}</h1>
                     <h6 className='text-black/35'>@{session.user.name}</h6>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsa optio sequi incidunt officiis accusantium soluta, repellendus maiores perferendis dignissimos. Excepturi!</p>
+                    <p>
+                        This is your profile. You have full control over your blogs here. You can create new posts, and delete any that you no longer want to keep. Navigate effortlessly between your blogs using the intuitive interface. Make your online presence truly yours.
+                    </p>
                 </div>
             </section>
             <h1 className="text-center font-bold mt-14 text-2xl font-serif after:content-none ">My Articles</h1>
@@ -39,8 +43,12 @@ export default async function page({ searchParams }: UserArticleTypes) {
                 <UserArticles currentPage={currentPage} />
             </Suspense>
             <div className="my-10 flex w-full justify-center">
-                <Pagination totalPages={totalPages} />
+                {totalPages > 0 ?
+                    <Pagination totalPages={totalPages} />
+                    : <h2 className='font-bold'>You dont have articles yet :) </h2>}
             </div>
+
+
         </>
     )
 }

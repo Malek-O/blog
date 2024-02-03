@@ -1,7 +1,8 @@
 import { unstable_noStore as noStore } from 'next/cache';
 import { prisma } from './prisma';
+import { notFound, redirect } from 'next/navigation';
 
-const ITEMS_PER_PAGE = 2;
+const ITEMS_PER_PAGE = 15;
 
 export async function fetchFilteredArticles(
     query: string,
@@ -72,31 +73,33 @@ export async function fetchArticlesPages(query: string) {
         throw new Error('Failed to fetch total number of invoices.');
     }
 }
-export async function fetchArticle(slug: string) {
+export async function fetchArticle(str: string[]) {
     noStore();
+    if (str.length !== 2) notFound()
     try {
         const row = await prisma.article.findFirst({
-            where:{
-                article_title: slug
+            where: {
+                article_title: str[1],
+                article_id: str[0]
             },
-            include:{
-                tags:true,
-                user:true
+            include: {
+                tags: true,
+                user: true
             }
         })
-
-        return row;
+        if (row) return row
     } catch (error) {
         console.error('Database Error:', error);
         throw new Error('Failed to fetch total number of invoices.');
     }
+    notFound()
 }
 
 export async function fetchUserArticles(
     currentPage: number,
 ) {
     noStore();
-    const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+    const offset = ((currentPage > 0 ? currentPage : 1) - 1) * ITEMS_PER_PAGE;
     try {
         const rows = await prisma.article.findMany({
             include: {

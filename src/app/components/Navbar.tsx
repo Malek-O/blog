@@ -14,7 +14,7 @@ export default async function Navbar() {
             <nav className="px-10 py-5 md:flex items-center justify-between hidden ">
                 <div className="flex items-center gap-28">
                     <div className="dark:bg-white px-8 py-6 relative bg-black">
-                        <h1 className="dark:text-black text-white font-bold text-lg absolute left-10 top-3">nu<span className="dark:text-white text-black" >ntium.</span></h1>
+                        <Link href={'/'} className="dark:text-black text-white font-bold text-lg absolute left-10 top-3">nu<span className="dark:text-white text-black" >ntium.</span></Link>
                     </div>
                     <ul className="flex gap-5">
                         <li className="text-lg">

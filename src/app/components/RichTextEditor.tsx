@@ -1,7 +1,6 @@
 'use client'
 import { Button } from "@/components/ui/button";
 import { useMemo, useState } from "react";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -19,12 +18,10 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import { useFormState } from "react-dom";
 import { addPost } from "@/lib/actions";
 import dynamic from "next/dynamic";
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { useFormStatus } from 'react-dom'
-
+import { Skeleton } from "@/components/ui/skeleton";
 
 type Tag = {
     value: string;
@@ -37,32 +34,46 @@ type TagsProps = {
 
 export default function RichTextEditor({ tags }: TagsProps) {
 
-    const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }), []);
+    const ReactQuill = useMemo(() => dynamic(async () => {
+        const { default: RQ } = await import("react-quill");
+        const surv = await import('@/app/components/quillConfig')
+        RQ.Quill.register("modules/clipboard", surv.SurveyFormClipboard, true);
+        return RQ
+    }, {
+        ssr: false, loading: () =>
+            <div className="mx-2">
+                <Skeleton className="h-4 w-96" />
+            </div>
+    }), []);
 
-    const initialState = {
-        message: '',
-    }
 
     const [title, setTitle] = useState('')
     const [article, setArticle] = useState('')
-    const [minutes, setMinutes] = useState(1)
     const [open, setOpen] = useState(false)
     const [value, setValue] = useState("")
-    const [state, formAction] = useFormState(addPost, initialState)
-    const { pending } = useFormStatus()
+    const [state, setState] = useState('');
+    const [loading, setLoading] = useState(false)
 
 
     const option = {
-        toolbar: [['code-block', 'italic', 'bold', 'underline', 'strike', { 'header': 1 }, { 'header': 2 }, 'blockquote']]
+        toolbar: [['code-block', 'italic', 'bold', 'underline', 'strike', { 'header': 1 }, { 'header': 2 }, 'blockquote']],
+        clipboard: {
+            matchVisual: false
+        }
     }
 
-
     return (
-        <form action={formAction}>
-            <div className="grid w-full max-w-sm items-center gap-3 px-5 md:px-10 my-5">
-                <Label htmlFor="minutesRead" className="ms-2">Number of minutes to read</Label>
-                <Input min={1} type="number" value={minutes} name="minutes" onChange={(e) => setMinutes(parseInt(e.target.value))} id="minutesRead" placeholder="5" />
-            </div>
+        <form onSubmit={async (e) => {
+            e.preventDefault()
+            setLoading(true)
+            const form = e.target as HTMLFormElement
+            const formData = new FormData(form)
+            const res = await addPost("", formData)
+            if(res?.message){
+                setState(res.message)
+                setLoading(false)
+            }
+        }}>
             <section className="mx-5 md:mx-10 my-5">
                 <Popover open={open} onOpenChange={setOpen}>
                     <PopoverTrigger asChild>
@@ -124,9 +135,9 @@ export default function RichTextEditor({ tags }: TagsProps) {
                 <input type="hidden" value={article} name="article" />
             </div>
             <div className="mx-5 md:mx-10 mt-20 mb-5">
-                {state?.message && <h1 className="text-red-600">{state.message}</h1>}
+                {state && <h1 className="text-red-600">{state}</h1>}
             </div>
-            <Button aria-disabled={pending} variant={"secondary"} className="mb-10 mx-5 md:mx-10  max-w-96 " >Publish</Button>
+            <Button disabled={loading} variant={"secondary"} className="mb-10 mx-5 md:mx-10  max-w-96 disabled:bg-slate-600" >Publish</Button>
         </form>
     )
 }

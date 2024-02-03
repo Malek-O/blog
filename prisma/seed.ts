@@ -66,7 +66,11 @@ async function main() {
         "Inspiration",
         "PositiveVibes",
         "Quotes",
-        "Mindset"
+        "Mindset",
+        "NextJS",
+        "ReactJS",
+        "ExpressJS",
+        "NodeJS",
     ];
     const allTagsFormatted = tagsWithoutHash.map(tag => ({ tag_name: tag }));
 

@@ -58,3 +58,26 @@ export const slugify = (str: string) =>
     .replace(/[^\w\s-]/g, "")
     .replace(/[\s_-]+/g, "-")
     .replace(/^-+|-+$/g, "");
+
+export function getWordCount(text:string) {
+  // Remove extra whitespaces and line breaks
+  let cleanText = text.trim().replace(/\s+/g, ' ');
+
+  // Split the text into words
+  let words = cleanText.split(' ');
+
+  // Count the number of words
+  let wordCount = words.length;
+
+  return wordCount;
+}   
+
+export function estimateTimeToRead(wordCount:number) {
+  // Average reading speed in words per minute
+  var wordsPerMinute = 200;
+
+  // Calculate the estimated time to read
+  var minutes = Math.ceil(wordCount / wordsPerMinute);
+
+  return minutes;
+}

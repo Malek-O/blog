@@ -9,16 +9,12 @@ import { cookies } from "next/headers";
 export async function addPost(prevState: any, formData: FormData) {
 
 
-    const min = formData.get('minutes') as string;
     const cat = formData.get('cat') as string
     const title = formData.get('title') as string;
     const article = formData.get('article') as string
+    let cleanedText = article.replace(/(<p><br><\/p>)+/g, '<p><br></p>').trim();
+    
 
-    if (parseInt(min) < 1) {
-        return {
-            message: 'Please enter a valid minutes count , more than or equal to 1',
-        }
-    }
     if (!cat.length) {
         return {
             message: 'Please enter a valid catagory',
@@ -29,7 +25,7 @@ export async function addPost(prevState: any, formData: FormData) {
             message: 'Title should be at least 3 characters',
         }
     }
-    if (!article.length || article.length < 250) {
+    if (!cleanedText.length || cleanedText.length < 250) {
         return {
             message: 'Article should be at least 250 characters',
         }
@@ -55,7 +51,7 @@ export async function addPost(prevState: any, formData: FormData) {
     }
 
     if (status == 201) {
-        redirect(`/blog/${slugify(title)}`)
+        redirect(`/blog/${text?.id}/${slugify(title)}`)
     } else {
         return {
             message: text ? text.message : "Something went wrong",
@@ -64,12 +60,10 @@ export async function addPost(prevState: any, formData: FormData) {
 }
 
 export async function deletePost(id: string) {
-    console.log(id);
 
     const session = await getServerSession()
     try {
         const userRow = await prisma.user.findUnique({ where: { author_email: session?.user?.email ?? "" } })
-        console.log("Start deleting ...");
 
         const deletedArt = await prisma.article.delete({
             where: {
@@ -77,9 +71,7 @@ export async function deletePost(id: string) {
                 user_id: userRow?.user_id ?? ""
             }
         })
-        console.log(deletedArt);
 
-        console.log(userRow);
         revalidatePath('/profile')
         return { message: 'Deleted Article.' };
 
