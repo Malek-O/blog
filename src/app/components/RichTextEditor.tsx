@@ -49,7 +49,6 @@ export default function RichTextEditor({ tags }: TagsProps) {
 
     const [title, setTitle] = useState('')
     const [article, setArticle] = useState('')
-    const [minutes, setMinutes] = useState(1)
     const [open, setOpen] = useState(false)
     const [value, setValue] = useState("")
     const [state, setState] = useState('');
@@ -75,10 +74,6 @@ export default function RichTextEditor({ tags }: TagsProps) {
                 setLoading(false)
             }
         }}>
-            <div className="grid w-full max-w-sm items-center gap-3 px-5 md:px-10 my-5">
-                <Label htmlFor="minutesRead" className="ms-2">Number of minutes to read</Label>
-                <Input min={1} type="number" value={minutes} name="minutes" onChange={(e) => setMinutes(parseInt(e.target.value))} id="minutesRead" placeholder="5" />
-            </div>
             <section className="mx-5 md:mx-10 my-5">
                 <Popover open={open} onOpenChange={setOpen}>
                     <PopoverTrigger asChild>

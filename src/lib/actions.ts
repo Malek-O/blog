@@ -9,18 +9,12 @@ import { cookies } from "next/headers";
 export async function addPost(prevState: any, formData: FormData) {
 
 
-    const min = formData.get('minutes') as string;
     const cat = formData.get('cat') as string
     const title = formData.get('title') as string;
     const article = formData.get('article') as string
     let cleanedText = article.replace(/(<p><br><\/p>)+/g, '<p><br></p>').trim();
     
 
-    if (parseInt(min) < 1) {
-        return {
-            message: 'Please enter a valid minutes count , more than or equal to 1',
-        }
-    }
     if (!cat.length) {
         return {
             message: 'Please enter a valid catagory',

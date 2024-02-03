@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma"
-import { slugify } from "@/lib/utils";
+import { estimateTimeToRead, getWordCount, slugify } from "@/lib/utils";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server"
 import { limiter } from "../config/limiter";
@@ -23,11 +23,13 @@ export async function POST(request: NextRequest) {
         })
     }
     const form = await request.formData()
-    const min = form.get('minutes') as string;
     const cat = form.get('cat') as string
     const title = form.get('title') as string;
     const article = form.get('article') as string
     let cleanedText = article.replace(/(<p><br><\/p>)+/g, '<p><br></p>').trim();
+
+    const wordCount = getWordCount(cleanedText)
+    const minutesToRead = estimateTimeToRead(wordCount)
 
     const session = await getServerSession()
     if (!session?.user) {
@@ -52,13 +54,13 @@ export async function POST(request: NextRequest) {
         const row = await prisma.article.create({
             data: {
                 article_content: DOMPurify.sanitize(cleanedText),
-                article_time: parseInt(min),
+                article_time: minutesToRead,
                 article_title: slugify(title),
                 user_id: findUser.user_id,
                 tagId: findTag.tag_id
             }
         })
-
+        
         return NextResponse.json({ message: "Successfully written", id: row.article_id }, { status: 201 })
     } catch (error) {
         console.log(error);
