@@ -2,7 +2,7 @@ import { unstable_noStore as noStore } from 'next/cache';
 import { prisma } from './prisma';
 import { notFound, redirect } from 'next/navigation';
 
-const ITEMS_PER_PAGE = 2;
+const ITEMS_PER_PAGE = 15;
 
 export async function fetchFilteredArticles(
     query: string,
